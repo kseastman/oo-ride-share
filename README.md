@@ -157,7 +157,7 @@ Now that we have data for cost available for every trip, we can do some interest
 
 **All of these methods must have tests.**
 
-<!-- ### Wave 2
+### Wave 2
 
 Our program needs a way to make new trips and appropriately assign a driver and passenger.
 

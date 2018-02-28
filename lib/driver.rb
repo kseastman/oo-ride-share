@@ -43,5 +43,33 @@ module RideShare
 
       @trips << trip
     end
+
+    def total_revenue
+      fee = 1.65
+      driver_take = 0.8
+
+
+      subtotal = 0
+      @trips.each do |trip|
+        subtotal += (trip.cost - fee)
+        # Question, what if the cost is less than the fee?
+      end
+
+      total = subtotal * driver_take
+      return total.round(2)
+    end
+
+    def average_revenue
+      revenue = total_revenue
+      hour_time = 0
+      hour = 60 * 60
+
+      trips.each do |trip|
+        hour_time += trip.duration / hour
+      end
+      revenue_per_hour = revenue / hour_time
+      average_revenue_per_hour = revenue_per_hour / trips.length
+      return average_revenue_per_hour
+    end
   end
 end

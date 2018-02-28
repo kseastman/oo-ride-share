@@ -77,4 +77,41 @@ describe "Driver class" do
       driver.average_rating.must_equal 0
     end
   end
+  describe "1.2 Aggregate Statistics" do
+    before do #use pry to get this info as hard coded data
+      dispatcher = RideShare::TripDispatcher.new
+      trip = dispatcher.trips.first
+      @driver = trip.driver
+      @duration = trip.duration
+
+
+    end
+
+    describe "Driver#total_revenue" do
+      it "returns total revenue" do
+# use hard coded data to created expected output, not magic numbers
+
+        total = @driver.total_revenue
+        total.must_equal 115.97
+      end
+    end
+
+    describe "Driver#average_revenue" do
+      it "returns average revenue per hour spent driving" do
+
+        hour = 60 * 60
+        hour_time = 0
+        @driver.trips.each do |trip|
+          hour_time += (trip.duration / hour)
+        end
+        trip_count = @driver.trips.length
+        revenue = @driver.total_revenue
+        expected = (revenue / hour_time) / trip_count
+
+        test = @driver.average_revenue
+        test.must_equal expected
+
+      end
+    end
+  end
 end

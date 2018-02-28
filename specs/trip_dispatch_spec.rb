@@ -87,6 +87,18 @@ describe "TripDispatcher class" do
       driver.trips.must_include trip
       passenger.must_be_instance_of RideShare::Passenger
       passenger.trips.must_include trip
+
+    end
+
+    it 'stores start_time and end_time as time objects' do
+      dispatcher = RideShare::TripDispatcher.new
+      trip = dispatcher.trips.first
+
+      trip_starts = trip.start_time
+      trip_ends = trip.end_time
+
+      trip_starts.must_be_instance_of Time
+      trip_ends.must_be_instance_of Time
     end
   end
 end

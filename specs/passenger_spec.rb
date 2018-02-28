@@ -74,5 +74,31 @@ describe "Passenger class" do
         driver.must_be_kind_of RideShare::Driver
       end
     end
+
+    describe "1.2 Aggregate Statistics" do
+      before do #use pry to get this info as hard coded data
+        dispatcher = RideShare::TripDispatcher.new
+        trip = dispatcher.trips.first
+        @passenger = trip.passenger
+        @duration = trip.duration
+      end
+
+      describe "Passenger#sum_trip_cost" do
+        it "returns total cost for all trips taken" do
+
+          total_cost = @passenger.sum_trip_cost
+          total_cost.must_equal 43.97
+        end
+      end
+
+      describe "Passenger#sum_trip_time" do
+        it "returns total duration for all trips taken" do
+
+          total_time = @passenger.sum_trip_time
+          total_time.must_equal 3360.0
+
+        end
+      end
+    end
   end
 end
