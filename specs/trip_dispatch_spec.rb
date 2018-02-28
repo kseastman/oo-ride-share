@@ -103,38 +103,43 @@ describe "TripDispatcher class" do
   end
 
   describe "Wave 2: TripDispatcher#request_trip(passenger_id)" do
-    before do
-      @dispatcher = RideShare::TripDispatcher.new
-      @result = @dispatcher.request_trip(34)
-    end
 
     it "assigns a driver to the trip" do
-      @result.must_be_instance_of RideShare::Trip
-      @result.driver.wont_be_nil
+      dispatcher = RideShare::TripDispatcher.new
+      result = dispatcher.request_trip(34)
+      result.must_be_instance_of RideShare::Trip
+      result.driver.wont_be_nil
     end
 
     it "chooses the first driver whose status is :AVAILABLE" do
-       id_list = @dispatcher.drivers.map(&:id)
-       status_list = @dispatcher.drivers.map(&:status)
-       driver_hash = Hash[id_list.zip(status_list)]
-
+      dispatcher = RideShare::TripDispatcher.new
+      driver_hash = Hash[dispatcher.drivers.map(&:id).zip(dispatcher.drivers.map(&:status))]
       expected_value = driver_hash.key(:AVAILABLE)
 
-      @result.driver.must_be_instance_of RideShare::Driver
-      @result.driver.id.must_equal expected_value
+      result = dispatcher.request_trip(34)
+
+      result.driver.must_be_instance_of RideShare::Driver
+      result.driver.id.must_equal expected_value
     end
 
     it "uses the current time for the start time" do
-    current_time = Time.now.to_s
-    result_time = @result.start_time.to_s
-    result_time.must_equal current_time
+      dispatcher = RideShare::TripDispatcher.new
+      result = dispatcher.request_trip(34)
+
+      current_time = Time.now.to_s
+      result_time = result.start_time.to_s
+
+      result_time.must_equal current_time
 
     end
 
     it "end date, cost and rating are nil" do
-      @result.end_time.must_be_nil
-      @result.cost.must_be_nil
-      @result.rating.must_be_nil
+      dispatcher = RideShare::TripDispatcher.new
+      result = dispatcher.request_trip(34)
+
+      result.end_time.must_be_nil
+      result.cost.must_be_nil
+      result.rating.must_be_nil
     end
 
   end

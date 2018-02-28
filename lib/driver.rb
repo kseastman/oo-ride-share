@@ -3,7 +3,7 @@ require_relative 'trip'
 
 module RideShare
   class Driver
-    attr_reader :id, :name, :vehicle_id, :status, :trips
+    attr_reader :id, :name, :vehicle_id, :status, :trips, :current_trip
 
     def initialize(input)
       if input[:id] == nil || input[:id] <= 0
@@ -17,7 +17,6 @@ module RideShare
       @name = input[:name]
       @vehicle_id = input[:vin]
       @status = input[:status] == nil ? :AVAILABLE : input[:status]
-
       @trips = input[:trips] == nil ? [] : input[:trips]
     end
 
@@ -40,8 +39,16 @@ module RideShare
       if trip.class != Trip
         raise ArgumentError.new("Can only add trip instance to trip collection")
       end
-
       @trips << trip
+    end
+
+    def change_status(trip)
+      if trip.end_time == nil
+        add_trip(trip)
+        @status = :UNAVAILABLE
+      else
+        @status = :AVAILABLE
+      end
     end
 
     def total_revenue

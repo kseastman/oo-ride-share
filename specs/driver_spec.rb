@@ -83,8 +83,6 @@ describe "Driver class" do
       trip = dispatcher.trips.first
       @driver = trip.driver
       @duration = trip.duration
-
-
     end
 
     describe "Driver#total_revenue" do
@@ -119,6 +117,29 @@ describe "Driver class" do
         test.must_equal expected
 
       end
+    end
+  end
+  describe "interaction with TripDispatcher#request_trip" do
+    before do
+      @dispatcher = RideShare::TripDispatcher.new
+      @result = @dispatcher.request_trip(34)
+      @driver = @result.driver
+      @trips = @driver.trips
+    end
+    it "adds new trip to the list of trips" do
+
+      trip_id = @result.id
+
+      result = @trips.last.id
+
+      result.must_equal trip_id
+
+    end
+
+    it "changes status to :UNAVAILABLE" do
+      status = @driver.status
+
+      status.must_equal :UNAVAILABLE
     end
   end
 end
