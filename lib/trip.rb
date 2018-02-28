@@ -10,14 +10,15 @@ module RideShare
       @id = input[:id]
       @driver = input[:driver]
       @passenger = input[:passenger]
-      @start_time = input[:start_time]
-      @end_time = input[:end_time]
-      @cost = input[:cost]
-      @rating = input[:rating]
+      @start_time = input[:start_time] == nil ? Time.now : input[:start_time]
+      @end_time = input[:end_time] == nil ? nil : input[:end_time]
+      @cost = input[:cost] == nil ? nil : input[:cost]
+      @rating = input[:rating] == nil ? nil : input[:rating]
 
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-
+      unless @rating == nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
 
       unless input[:start_time] == nil

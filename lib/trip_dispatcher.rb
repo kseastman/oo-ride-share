@@ -91,6 +91,25 @@ module RideShare
       trips
     end
 
+    def request_trip(passenger_id)
+      id_list = drivers.map(&:id)
+      status_list = drivers.map(&:status)
+      driver_hash = Hash[id_list.zip(status_list)]
+      driver = find_driver(driver_hash.key(:AVAILABLE))
+      id = trips.length + 1
+      passenger = find_passenger(passenger_id)
+
+      trip_data = {
+        id: id,
+        driver: driver,
+        passenger: passenger
+      }
+      new_trip = Trip.new(trip_data)
+      trips << new_trip
+
+      return new_trip
+    end
+
     private
 
     def check_id(id)
