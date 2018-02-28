@@ -89,10 +89,17 @@ describe "Driver class" do
 
     describe "Driver#total_revenue" do
       it "returns total revenue" do
-# use hard coded data to created expected output, not magic numbers
+        # use hard coded data to created expected output, not magic numbers
+        trips = @driver.trips
+        subtotal = 0
+         trips.each do |trip|
+          subtotal += (trip.cost - 1.65)
+        end
+        revenue_total = subtotal * 0.8
+        expected_value = revenue_total.round(2)
 
         total = @driver.total_revenue
-        total.must_equal 115.97
+        total.must_equal expected_value
       end
     end
 

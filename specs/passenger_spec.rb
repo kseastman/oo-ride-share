@@ -85,17 +85,30 @@ describe "Passenger class" do
 
       describe "Passenger#sum_trip_cost" do
         it "returns total cost for all trips taken" do
+          trips = @passenger.trips
+          subtotal = 0
+           trips.each do |trip|
+            subtotal += trip.cost
+          end
+          expected_value = subtotal
+
 
           total_cost = @passenger.sum_trip_cost
-          total_cost.must_equal 43.97
+          total_cost.must_equal expected_value
         end
       end
 
       describe "Passenger#sum_trip_time" do
         it "returns total duration for all trips taken" do
+          trips = @passenger.trips
+          subtotal = 0
+           trips.each do |trip|
+            subtotal += trip.duration
+          end
+          expected_value = subtotal
 
           total_time = @passenger.sum_trip_time
-          total_time.must_equal 3360.0
+          total_time.must_equal expected_value
 
         end
       end
