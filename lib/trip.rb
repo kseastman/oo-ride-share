@@ -29,7 +29,9 @@ module RideShare
     end
 
     def duration
-      duration_in_seconds = end_time - start_time
+      unless end_time == nil
+        duration_in_seconds = end_time - start_time
+      end
       return duration_in_seconds
     end
   end

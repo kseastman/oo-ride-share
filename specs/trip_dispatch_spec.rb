@@ -150,9 +150,51 @@ describe "TripDispatcher class" do
         passengers = @dispatcher.passengers
 
 
-      proc{ passengers.each do |passenger|
-        @dispatcher.request_trip(passenger.id)
-      end }.must_raise ArgumentError
+        proc{ passengers.each do |passenger|
+          @dispatcher.request_trip(passenger.id)
+        end }.must_raise ArgumentError
+      end
+    end
+
+    describe "TripDispatcher#request_trip - Limit Wave 1 Interactions" do
+      before do
+        @dispatcher = RideShare::TripDispatcher.new
+        @result = @dispatcher.request_trip(34)
+        @passenger = @result.passenger
+        @driver = @result.driver
+      end
+
+      it "is an inprogress trip" do
+        ended = @result.end_time
+        ended.must_be_nil
+      end
+
+      it "ignores inprogress trips in Passenger#cost" do
+        subtotal = 0
+        @passenger.trips.each do |trip|
+          unless trip.cost == nil
+            subtotal += trip.cost
+          end
+        end
+        expected_value = subtotal
+
+        total_cost = @passenger.sum_trip_cost
+        total_cost.must_equal expected_value
+      end
+
+      it "ignores inprogress trips in Driver#total_revenue" do
+        subtotal = 0
+        @driver.trips.each do |trip|
+          if trip.cost == nil
+            next
+          else
+            subtotal += trip.cost - 1.65
+          end
+        end
+        expected_value = subtotal * 0.8
+
+        result = @driver.total_revenue
+        result.must_equal expected_value.round(2)
       end
     end
 

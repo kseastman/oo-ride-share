@@ -58,7 +58,11 @@ module RideShare
 
       subtotal = 0
       @trips.each do |trip|
-        subtotal += (trip.cost - fee)
+        if trip.cost == nil
+          next
+        else
+          subtotal += (trip.cost - fee)
+        end
         # Question, what if the cost is less than the fee?
       end
 
