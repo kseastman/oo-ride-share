@@ -74,12 +74,17 @@ module RideShare
       revenue = total_revenue
       hour_time = 0
       hour = 60 * 60
+      trip_count = trips.length
 
       trips.each do |trip|
-        hour_time += trip.duration / hour
+        if trip.end_time == nil
+          trip_count -= 1
+        else
+          hour_time += trip.duration / hour
+        end
       end
       revenue_per_hour = revenue / hour_time
-      average_revenue_per_hour = revenue_per_hour / trips.length
+      average_revenue_per_hour = revenue_per_hour / trip_count
       return average_revenue_per_hour
     end
   end

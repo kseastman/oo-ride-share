@@ -196,6 +196,25 @@ describe "TripDispatcher class" do
         result = @driver.total_revenue
         result.must_equal expected_value.round(2)
       end
+
+      it "ignores inprogress trips in Driver#average_revenue" do
+        hour = 60 * 60
+        hour_time = 0
+        @driver.trips.each do |trip|
+          if trip.duration == nil
+            next
+          else
+            hour_time += (trip.duration / hour)
+          end
+        end
+        trip_count = @driver.trips.length - 1
+        revenue = @driver.total_revenue
+        expected = (revenue / hour_time) / trip_count
+
+        test = @driver.average_revenue
+
+        test.must_equal expected
+      end
     end
 
   end
