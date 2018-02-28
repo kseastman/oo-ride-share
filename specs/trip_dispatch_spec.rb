@@ -132,7 +132,9 @@ describe "TripDispatcher class" do
     end
 
     it "end date, cost and rating are nil" do
-
+      @result.end_time.must_be_nil
+      @result.cost.must_be_nil
+      @result.rating.must_be_nil
     end
 
   end
