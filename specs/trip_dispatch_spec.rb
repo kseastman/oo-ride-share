@@ -142,5 +142,19 @@ describe "TripDispatcher class" do
       result.rating.must_be_nil
     end
 
+    describe "edge cases for request_trip" do
+      before do
+        @dispatcher = RideShare::TripDispatcher.new
+      end
+      it "raises an error if there are no more available drivers" do
+        passengers = @dispatcher.passengers
+
+
+      proc{ passengers.each do |passenger|
+        @dispatcher.request_trip(passenger.id)
+      end }.must_raise ArgumentError
+      end
+    end
+
   end
 end
