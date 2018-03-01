@@ -32,7 +32,7 @@ module RideShare
       end
       return total_cost
     end
-
+    
     def sum_trip_time
       subtotal = 0
       trips.each do |trip|

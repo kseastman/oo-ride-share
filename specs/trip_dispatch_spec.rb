@@ -221,7 +221,7 @@ describe "TripDispatcher class" do
 
     describe "Wave 3 - TripDispatcher#request_trip" do
       before do
-        passenger_id = 34
+        @passenger_id = 34
         @dispatcher = RideShare::TripDispatcher.new
 
       end
@@ -252,7 +252,7 @@ describe "TripDispatcher class" do
         end
         expected_value = most_recent.driver.id
 
-        result = @dispatcher.request_trip(34)
+        result = @dispatcher.request_trip(@passenger_id)
 
         result.driver.id.must_equal expected_value
       end

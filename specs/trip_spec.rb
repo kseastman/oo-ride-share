@@ -46,7 +46,7 @@ describe "Trip class" do
       }.must_raise ArgumentError
     end
   end
-
+  
   describe "duration_in_seconds" do
     it "returns the trip duration in seconds" do
       @trip.duration.must_equal 25 * 60
