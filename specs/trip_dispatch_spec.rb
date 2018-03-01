@@ -239,18 +239,20 @@ describe "TripDispatcher class" do
       end
 
       it "Selects the driver whose most recent trip was longest back" do
-        trips = @dispatcher.trips
-        most_recent = trips.first
+        # trips = @dispatcher.trips
+        # most_recent = trips.first
+        #
+        # trips.each do |trip|
+        #   driver = trip.driver
+        #   if driver.status == :AVAILABLE
+        #     if trip.end_time < most_recent.end_time
+        #       most_recent = trip
+        #     end
+        #   end
+        # end
+        # expected_value = most_recent.driver.id
 
-        trips.each do |trip|
-          driver = trip.driver
-          if driver.status == :AVAILABLE
-            if trip.end_time < most_recent.end_time
-              most_recent = trip
-            end
-          end
-        end
-        expected_value = most_recent.driver.id
+        expected_value = 14
 
         result = @dispatcher.request_trip(@passenger_id)
 
