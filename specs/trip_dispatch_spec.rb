@@ -111,16 +111,18 @@ describe "TripDispatcher class" do
       result.driver.wont_be_nil
     end
 
-    it "chooses the first driver whose status is :AVAILABLE" do
-      dispatcher = RideShare::TripDispatcher.new
-      driver_hash = Hash[dispatcher.drivers.map(&:id).zip(dispatcher.drivers.map(&:status))]
-      expected_value = driver_hash.key(:AVAILABLE)
-
-      result = dispatcher.request_trip(34)
-
-      result.driver.must_be_instance_of RideShare::Driver
-      result.driver.id.must_equal expected_value
-    end
+    # This test is superseded by later tests
+    # it "chooses the first driver whose status is :AVAILABLE" do
+    #   dispatcher = RideShare::TripDispatcher.new
+    #   drivers = dispatcher.drivers
+    #   driver_hash = Hash[drivers.collect { |driver| [driver.id, driver.status] } ]
+    #   expected_value = driver_hash.key(:AVAILABLE)
+    #
+    #   result = dispatcher.request_trip(34)
+    #
+    #   result.driver.must_be_instance_of RideShare::Driver
+    #   result.must_be_instance_of RideShare::Trip
+    # end
 
     it "uses the current time for the start time" do
       dispatcher = RideShare::TripDispatcher.new
@@ -214,6 +216,45 @@ describe "TripDispatcher class" do
         test = @driver.average_revenue
 
         test.must_equal expected
+      end
+    end
+
+    describe "Wave 3 - TripDispatcher#request_trip" do
+      before do
+        passenger_id = 34
+        @dispatcher = RideShare::TripDispatcher.new
+
+      end
+
+      it "helper method only selects available drivers" do
+        available_drivers = @dispatcher.select_driver
+        result = available_drivers.status
+        result.wont_equal :UNAVAILABLE
+      end
+
+      it "Does not include drivers with in-progress trips" do
+        result = @dispatcher.select_driver
+
+        result.wont_be_nil
+      end
+
+      it "Selects the driver whose most recent trip was longest back" do
+        trips = @dispatcher.trips
+        most_recent = trips.first
+
+        trips.each do |trip|
+          driver = trip.driver
+          if driver.status == :AVAILABLE
+            if trip.end_time < most_recent.end_time
+              most_recent = trip
+            end
+          end
+        end
+        expected_value = most_recent.driver.id
+
+        result = @dispatcher.request_trip(34)
+
+        result.driver.id.must_equal expected_value
       end
     end
 

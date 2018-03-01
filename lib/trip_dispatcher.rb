@@ -91,14 +91,27 @@ module RideShare
       trips
     end
 
+    def select_driver
+      most_recent = trips.first
+      available_driver = []
+      trips.each do |trip|
+        driver = trip.driver
+        if driver.status == :AVAILABLE
+          if trip.end_time < most_recent.end_time
+            most_recent = trip
+            available_driver << driver
+          end
+        end
+      end
+      if available_driver.empty?
+        raise ArgumentError.new("All drivers are unavailable.")
+      else
+        return most_recent.driver
+      end
+    end
+
     def request_trip(passenger_id)
-      id_list = drivers.map(&:id)
-      status_list = drivers.map(&:status)
-
-      driver_hash = Hash[id_list.zip(status_list)]
-
-      driver = find_driver(driver_hash.key(:AVAILABLE))
-
+      driver = select_driver
       id = trips.length + 1
 
       passenger = find_passenger(passenger_id)
