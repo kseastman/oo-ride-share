@@ -252,7 +252,7 @@ describe "TripDispatcher class" do
         # end
         # expected_value = most_recent.driver.id
 
-        expected_value = 14
+        expected_value = 17 #driver_id supplied by instructors
 
         result = @dispatcher.request_trip(@passenger_id)
 

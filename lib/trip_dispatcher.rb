@@ -97,7 +97,7 @@ module RideShare
       trips.each do |trip|
         driver = trip.driver
         if driver.status == :AVAILABLE
-          if trip.end_time < most_recent.end_time
+          if trip.end_time > most_recent.end_time
             most_recent = trip
             available_driver << driver
           end
