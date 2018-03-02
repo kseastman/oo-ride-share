@@ -6,7 +6,7 @@ module RideShare
     attr_reader :id, :passenger, :driver, :start_time, :end_time, :cost, :rating
 
     def initialize(input)
-      
+
       @id = input[:id]
       @driver = input[:driver]
       @passenger = input[:passenger]
@@ -34,5 +34,10 @@ module RideShare
       end
       return duration_in_seconds
     end
+
+    def inspect
+      "#<#{self.class.name}:0x#{self.object_id.to_s(16)}>"
+    end
+
   end
 end
