@@ -91,22 +91,43 @@ module RideShare
       trips
     end
 
-    def select_driver
-      most_recent = trips.first
-      available_driver = []
-      trips.each do |trip|
-        driver = trip.driver
-        if driver.status == :AVAILABLE
-          if trip.end_time > most_recent.end_time
-            most_recent = trip
-            available_driver << driver
+    def least_recent
+      last_trips = []
+      drivers.each do |driver|
+        unless driver.trips.first == nil
+          driver.trips.sort! do |trip1, trip2|
+            trip1.end_time <=> trip2.end_time
           end
         end
       end
+
+      drivers.each do |driver|
+        unless driver.trips.first == nil
+          last_trips << driver.trips.last
+        end
+      end
+
+
+      completed_trips = last_trips.find_all do |trip|
+        trip.end_time != nil && trip.driver.status == :AVAILABLE
+      end
+      trips_hash = Hash[completed_trips.collect {|trip| [trip.driver.id, trip.end_time]}]
+      sorted_trips = trips_hash.sort {|first_trip, second_trip| first_trip[1] <=> second_trip[1]}
+      # if trip.end_time > least_recent.end_time
+      #   least_recent = trip
+      # end
+      # binding.pry
+      return find_driver(sorted_trips.first[0])
+    end
+
+    def select_driver
+
+      available_driver = drivers.find_all{ |driver| driver.status == :AVAILABLE }
+      least_recent
       if available_driver.empty?
-        raise ArgumentError.new("All drivers are unavailable.")
+        raise ArgumentError.new("No drivers currently available.")
       else
-        return most_recent.driver
+        return least_recent
       end
     end
 
@@ -124,7 +145,7 @@ module RideShare
       new_trip = Trip.new(trip_data)
       trips << new_trip
       passenger.add_trip(new_trip)
-      driver.change_status(new_trip)
+      driver.add_trip(new_trip)
 
       return new_trip
     end

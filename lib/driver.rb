@@ -38,18 +38,21 @@ module RideShare
     def add_trip(trip)
       if trip.class != Trip
         raise ArgumentError.new("Can only add trip instance to trip collection")
+      elsif trip.end_time == nil
+      change_status
       end
       @trips << trip
     end
 
-    def change_status(trip)
-      if trip.end_time == nil
-        add_trip(trip)
-        @status = :UNAVAILABLE
-      else
+    def change_status
+      if
+        @status == :UNAVAILABLE
         @status = :AVAILABLE
+      else
+        @status = :UNAVAILABLE
       end
     end
+
 
     def total_revenue
       fee = 1.65

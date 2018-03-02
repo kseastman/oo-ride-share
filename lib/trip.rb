@@ -21,7 +21,7 @@ module RideShare
         end
       end
 
-      unless input[:start_time] == nil
+      unless input[:end_time] == nil
         unless input[:start_time] <= input[:end_time]
           raise ArgumentError.new("Trip start time cannot be after it's end time. (got start time: #{input[:start_time]} - end time: #{input[:end_time]})")
         end

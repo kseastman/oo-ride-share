@@ -149,11 +149,11 @@ describe "TripDispatcher class" do
         @dispatcher = RideShare::TripDispatcher.new
       end
       it "raises an error if there are no more available drivers" do
-        passengers = @dispatcher.passengers
+        drivers = @dispatcher.drivers
 
 
-        proc{ passengers.each do |passenger|
-          @dispatcher.request_trip(passenger.id)
+        proc{ drivers.each do |driver|
+          @dispatcher.request_trip(14)
         end }.must_raise ArgumentError
       end
     end
@@ -252,11 +252,12 @@ describe "TripDispatcher class" do
         # end
         # expected_value = most_recent.driver.id
 
-        expected_value = 17 #driver_id supplied by instructors
+        expected_value = [14, 27, 6, 87, 75] #driver_id supplied by instructors
 
-        result = @dispatcher.request_trip(@passenger_id)
 
-        result.driver.id.must_equal expected_value
+          result = @dispatcher.request_trip(1)
+          result.driver.id.must_equal 14
+
       end
     end
 
