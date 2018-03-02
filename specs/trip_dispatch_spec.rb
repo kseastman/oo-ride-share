@@ -254,10 +254,22 @@ describe "TripDispatcher class" do
 
         expected_value = [14, 27, 6, 87, 75] #driver_id supplied by instructors
 
-
+        expected_value.each do |value|
           result = @dispatcher.request_trip(1)
-          result.driver.id.must_equal 14
-
+          result.driver.id.must_equal value
+        end
+        #   result1 = @dispatcher.request_trip(1)
+        #   result1.driver.id.must_equal 27
+        #
+        #   result2 = @dispatcher.request_trip(1)
+        #   result2.driver.id.must_equal 6
+        #
+        #   result3 = @dispatcher.request_trip(1)
+        #   result3.driver.id.must_equal 87
+        #
+        #   result4 = @dispatcher.request_trip(1)
+        #   result4.driver.id.must_equal 75
+        # # end
       end
     end
 
